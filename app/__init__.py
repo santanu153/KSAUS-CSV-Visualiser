@@ -14,9 +14,15 @@ def create_app():
     
     # Use /tmp directory for Vercel serverless environment
     is_vercel = os.environ.get('VERCEL', False)
+    is_render = os.environ.get('RENDER', False)
+    
     if is_vercel:
         db_path = '/tmp/datasets.db'
         upload_path = '/tmp/uploads'
+    elif is_render:
+        # Render provides persistent disk at /opt/render/project/src
+        db_path = os.path.join(root, 'datasets.db')
+        upload_path = os.path.join(root, 'uploads')
     else:
         db_path = os.path.join(root, 'datasets.db')
         upload_path = os.path.join(root, 'uploads')
