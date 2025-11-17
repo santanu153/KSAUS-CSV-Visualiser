@@ -2,7 +2,7 @@ Flask==2.3.3
 pandas==2.2.3
 Flask-SQLAlchemy==3.0.3
 python-dotenv==1.0.0
-SQLAlchemy==2.0.22
+SQLAlchemy==2.0.36
 Werkzeug==2.3.7
 gunicorn==21.2.0
 numpy==2.3.4
