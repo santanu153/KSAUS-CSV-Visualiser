@@ -54,3 +54,7 @@ desktop.ini
 # Environment variables
 .env
 .env.local
+
+# Vercel
+.vercel
+.vercel/

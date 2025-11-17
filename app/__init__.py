@@ -11,9 +11,19 @@ def create_app():
     app = Flask(__name__, static_folder="static", template_folder="templates")
 
     root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(root, 'datasets.db')
+    
+    # Use /tmp directory for Vercel serverless environment
+    is_vercel = os.environ.get('VERCEL', False)
+    if is_vercel:
+        db_path = '/tmp/datasets.db'
+        upload_path = '/tmp/uploads'
+    else:
+        db_path = os.path.join(root, 'datasets.db')
+        upload_path = os.path.join(root, 'uploads')
+    
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['UPLOAD_FOLDER'] = os.path.join(root, 'uploads')
+    app.config['UPLOAD_FOLDER'] = upload_path
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
     db.init_app(app)
