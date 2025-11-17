@@ -168,6 +168,25 @@ def dataset_chart(ds_id):
         return jsonify({'labels': labels, 'values': values, 'type': 'bar'})
 
 
+@app.route('/api/dataset/<int:ds_id>', methods=['DELETE'])
+def delete_dataset(ds_id):
+    ds = Dataset.query.get_or_404(ds_id)
+    path = os.path.join(app.config['UPLOAD_FOLDER'], ds.filename)
+    
+    # Delete file from filesystem if it exists
+    if os.path.exists(path):
+        try:
+            os.remove(path)
+        except Exception as e:
+            return jsonify({'error': 'failed to delete file', 'detail': str(e)}), 500
+    
+    # Delete from database
+    db.session.delete(ds)
+    db.session.commit()
+    
+    return jsonify({'success': True, 'message': 'Dataset deleted successfully'})
+
+
 @app.route('/uploads/<path:filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)

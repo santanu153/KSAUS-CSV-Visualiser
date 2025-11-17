@@ -13,11 +13,51 @@ async function listDatasets(){
   ul.innerHTML = ''
   ds.forEach(d=>{
     const li = document.createElement('li')
-    li.className = 'list-group-item d-flex justify-content-between align-items-start'
-    li.innerHTML = `<div><strong>${d.original_name}</strong><br/><small>${d.rows} rows · ${d.cols} cols</small></div><div><button class='btn btn-sm btn-outline-primary'>Open</button></div>`
-    li.onclick = ()=>{ selectDataset(d.id) }
+    li.className = 'list-group-item d-flex justify-content-between align-items-center'
+    li.innerHTML = `
+      <div style="cursor: pointer;" onclick="selectDataset(${d.id})">
+        <strong>${d.original_name}</strong><br/>
+        <small>${d.rows} rows · ${d.cols} cols</small>
+      </div>
+      <button class='btn btn-sm btn-danger' onclick="deleteDataset(${d.id}, event)">
+        <span style="font-size: 1rem;">🗑️</span>
+      </button>
+    `
     ul.appendChild(li)
   })
+}
+
+async function deleteDataset(id, event){
+  event.stopPropagation()
+  
+  if(!confirm('Are you sure you want to delete this dataset?')) return
+  
+  const res = await fetch(`/api/dataset/${id}`, {method: 'DELETE'})
+  const data = await res.json()
+  
+  if(data.error) {
+    alert(`Error: ${data.error}`)
+    return
+  }
+  
+  // If deleted dataset was selected, clear current selection
+  if(currentDataset === id) {
+    currentDataset = null
+    document.getElementById('xSelect').innerHTML = '<option value="">Select X column</option>'
+    document.getElementById('ySelect').innerHTML = '<option value="">Select Y column (numeric)</option>'
+    document.getElementById('previewTable').innerHTML = ''
+    
+    // Clear all charts
+    Object.keys(charts).forEach(type => {
+      if(charts[type]) {
+        charts[type].destroy()
+        charts[type] = null
+      }
+    })
+  }
+  
+  await listDatasets()
+  alert('Dataset deleted successfully')
 }
 
 async function selectDataset(id){
