@@ -257,7 +257,7 @@ canvas {
 }
 
 #welcomeSection::before {
-  content: 'KSASUS';
+  content: 'KSUAS';
   position: absolute;
   font-size: 20rem;
   font-weight: 900;
