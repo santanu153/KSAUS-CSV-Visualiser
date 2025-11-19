@@ -1,8 +1,15 @@
-CSV Visualizer — Full-stack Flask app
+KSUAS CSV Visualizer — Full-stack Flask app with ML Analytics
 
 Overview
 
-This project is a minimal, modern CSV visualization web app: upload a CSV and create charts from its columns. Backend is Python + Flask + SQLite; frontend uses Bootstrap and Chart.js.
+This project is a modern CSV visualization web app with predictive analytics: upload a CSV, create interactive charts, analyze trends, and forecast future values. Backend is Python + Flask + SQLite + scikit-learn; frontend uses Bootstrap and Chart.js.
+
+Features:
+- 📊 Multiple chart types (Bar, Line, Pie, Histogram)
+- 🔮 Predictive analytics with linear regression (3/4/5 year forecasts)
+- 📋 Comprehensive serial-wise analysis reports for each chart
+- 📈 Statistical insights: mean, median, quartiles, outliers, trends
+- 🗑️ Dataset management with upload/delete functionality
 
 Quick start (Windows PowerShell)
 
